@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MultiService Pro · Login</title>
+    <!-- Bootstrap 5 + Icons + Fonts -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
+    <style>
+        /* ----- global reset & variables (soft, aesthetic) ----- */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8fafc;
+            --text-primary: #1e293b;
+            --text-secondary: #475569;
+            --border-color: #e2e8f0;
+            --accent-soft: #7c3aed;
+            --accent-glow: rgba(124, 58, 237, 0.15);
+            --accent-green: #10b981;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.04);
+            --shadow-md: 0 12px 40px rgba(0,0,0,0.06);
+            --radius-card: 24px;
+            --radius-btn: 40px;
+            --transition-bounce: cubic-bezier(0.34, 1.56, 0.64, 1);
+            --transition-smooth: cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        [data-theme="dark"] {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --border-color: #334155;
+            --shadow-md: 0 12px 40px rgba(0,0,0,0.4);
+            --accent-glow: rgba(124, 58, 237, 0.25);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: background 0.3s ease, color 0.2s ease;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            margin: 0;
+        }
+
+        /* main card – soft, glassmorphic */
+        .main-card {
+            max-width: 480px;
+            width: 100%;
+            background: var(--bg-primary);
+            border-radius: var(--radius-card);
+            box-shadow: var(--shadow-md);
+            padding: 36px 32px 40px;
+            border: 1px solid var(--border-color);
+            transition: all 0.3s var(--transition-smooth);
+            backdrop-filter: blur(4px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* subtle decorative gradient blob */
+        .main-card::before {
+            content: '';
+            position: absolute;
+            top: -60px;
+            right: -60px;
+            width: 200px;
+            height: 200px;
+            background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .main-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        /* brand */
+        .brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 700;
+            font-size: 1.8rem;
+            letter-spacing: -0.02em;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+        }
+        .brand i {
+            color: var(--accent-soft);
+            font-size: 2.2rem;
+            filter: drop-shadow(0 4px 12px var(--accent-glow));
+            transition: transform 0.4s var(--transition-bounce);
+        }
+        .brand:hover i {
+            transform: scale(1.05) rotate(-2deg);
+        }
+
+        .subhead {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            margin-bottom: 28px;
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* theme toggle (refined) */
+        .theme-toggle {
+            width: 48px;
+            height: 28px;
+            background: var(--border-color);
+            border-radius: 40px;
+            border: 1px solid var(--border-color);
+            position: relative;
+            cursor: pointer;
+            transition: 0.3s var(--transition-smooth);
+            flex-shrink: 0;
+        }
+        .theme-toggle .knob {
+            width: 22px;
+            height: 22px;
+            background: white;
+            border-radius: 50%;
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            transition: 0.3s var(--transition-bounce);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .theme-toggle.active {
+            background: var(--accent-soft);
+            border-color: var(--accent-soft);
+        }
+        .theme-toggle.active .knob {
+            left: 22px;
+            background: white;
+        }
+
+        /* ----- buttons (soft, aesthetic) ----- */
+        .btn-soft {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 12px 28px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            border-radius: var(--radius-btn);
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            color: var(--text-primary);
+            transition: all 0.25s var(--transition-bounce);
+            box-shadow: 0 2px 0 rgba(0,0,0,0.02);
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+        }
+
+        .btn-soft-primary {
+            background: var(--accent-soft);
+            border-color: var(--accent-soft);
+            color: #fff;
+            box-shadow: 0 4px 16px var(--accent-glow);
+        }
+        .btn-soft-primary:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 8px 28px var(--accent-glow);
+            background: #6d28d9;
+            color: #fff;
+        }
+        .btn-soft-primary:active {
+            transform: translateY(2px) scale(0.98);
+        }
+
+        .btn-soft-outline {
+            background: transparent;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-primary);
+        }
+        .btn-soft-outline:hover {
+            border-color: var(--accent-soft);
+            background: var(--accent-glow);
+            color: var(--accent-soft);
+            transform: translateY(-2px);
+        }
+
+        .btn-soft-success {
+            background: var(--accent-green);
+            border-color: var(--accent-green);
+            color: #fff;
+            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.2);
+        }
+        .btn-soft-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 28px rgba(16, 185, 129, 0.3);
+            background: #059669;
+        }
+
+        /* form */
+        .form-soft {
+            background: var(--bg-secondary);
+            border-radius: 20px;
+            padding: 24px 20px 28px;
+            border: 1px solid var(--border-color);
+            margin-top: 6px;
+        }
+
+        .form-control-soft {
+            background: var(--bg-primary);
+            border: 1.5px solid var(--border-color);
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-size: 0.95rem;
+            color: var(--text-primary);
+            transition: 0.2s var(--transition-smooth);
+            width: 100%;
+        }
+        .form-control-soft:focus {
+            border-color: var(--accent-soft);
+            box-shadow: 0 0 0 4px var(--accent-glow);
+            outline: none;
+        }
+
+        .input-group-soft {
+            position: relative;
+        }
+        .input-group-soft .toggle-pw {
+            position: absolute;
+            right: 14px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            padding: 6px 10px;
+            font-size: 1rem;
+            border-radius: 30px;
+            transition: 0.2s;
+        }
+        .input-group-soft .toggle-pw:hover {
+            background: var(--accent-glow);
+            color: var(--accent-soft);
+        }
+
+        /* divider */
+        .divider-soft {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin: 22px 0 18px;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+        }
+        .divider-soft::before,
+        .divider-soft::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border-color);
+        }
+
+        /* message alert */
+        .alert-soft {
+            border-radius: 16px;
+            border: 1px solid var(--border-color);
+            background: var(--bg-secondary);
+            padding: 14px 20px;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            display: none;
+        }
+        .alert-soft.show {
+            display: block;
+        }
+
+        /* small links */
+        .link-soft {
+            color: var(--accent-soft);
+            text-decoration: none;
+            font-weight: 500;
+            transition: 0.2s;
+        }
+        .link-soft:hover {
+            text-decoration: underline;
+            color: #6d28d9;
+        }
+
+        /* hidden admin note (only for you) */
+        .admin-credit {
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            opacity: 0.4;
+            margin-top: 12px;
+            text-align: center;
+            letter-spacing: 0.3px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 16px;
+        }
+
+        /* responsive */
+        @media (max-width: 480px) {
+            .main-card { padding: 24px 18px 28px; }
+            .brand { font-size: 1.4rem; }
+            .form-soft { padding: 18px 14px; }
+            .btn-soft { font-size: 0.9rem; padding: 10px 18px; }
+        }
+
+        /* dashboard preview styles (for demo) */
+        .dashboard-preview {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            border-radius: 16px;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+        }
+        .dashboard-preview.active {
+            display: block;
+        }
+        .dashboard-preview h4 {
+            color: var(--accent-soft);
+            margin-bottom: 12px;
+        }
+        .dashboard-preview .badge-soft {
+            background: var(--accent-glow);
+            color: var(--accent-soft);
+            padding: 4px 12px;
+            border-radius: 30px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .quick-link {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 30px;
+            background: var(--bg-primary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            transition: 0.2s;
+            margin: 4px;
+        }
+        .quick-link:hover {
+            border-color: var(--accent-soft);
+            color: var(--accent-soft);
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body>
+<div class="main-card" id="app">
+    <!-- header -->
+    <div class="d-flex justify-content-between align-items-start mb-2">
+        <div class="brand">
+            <i class="fas fa-cube"></i>
+            <span>MultiService</span>
+        </div>
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+            <span class="knob"></span>
+        </button>
+    </div>
+    <p class="subhead" id="pageTitle">Sign in with your account or ID</p>
+
+    <!-- message -->
+    <div id="messageBox" class="alert-soft"></div>
+
+    <!-- login form -->
+    <div id="loginContainer">
+        <div class="form-soft">
+            <form id="loginForm" novalidate>
+                <div class="mb-3">
+                    <input type="text" class="form-control-soft" id="loginIdentifier" placeholder="Account ID or email" required>
+                </div>
+                <div class="mb-3 input-group-soft">
+                    <input type="password" class="form-control-soft" id="loginPassword" placeholder="Password" required>
+                    <button type="button" class="toggle-pw" onclick="togglePasswordVisibility('loginPassword', this)">
+                        <i class="fas fa-eye"></i>
+                    </button>
+                </div>
+                <div class="d-flex flex-wrap justify-content-between align-items-center mb-3">
+                    <div class="form-check">
+                        <input class="form-check-input" type="checkbox" id="rememberMe" style="border-radius:6px; border-color:var(--border-color);">
+                        <label class="form-check-label" for="rememberMe" style="font-size:0.85rem; color:var(--text-secondary);">Remember</label>
+                    </div>
+                    <a href="#" id="forgotLink" class="link-soft" style="font-size:0.85rem;">Forgot?</a>
+                </div>
+                <button type="submit" class="btn-soft btn-soft-primary" id="loginBtn">
+                    <i class="fas fa-arrow-right-to-bracket me-2"></i>Sign in
+                </button>
+                <div class="divider-soft"><span>or</span></div>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button type="button" class="btn-soft btn-soft-outline flex-fill"><i class="fab fa-google me-2"></i>Google</button>
+                    <button type="button" class="btn-soft btn-soft-outline flex-fill"><i class="fab fa-github me-2"></i>GitHub</button>
+                </div>
+                <p class="mt-3 text-center" style="font-size:0.9rem; color:var(--text-secondary);">
+                    New here? <a href="#" id="switchToRegister" class="link-soft">Create account</a>
+                </p>
+            </form>
+
+            <!-- register form (hidden) -->
+            <div id="registerFormContainer" class="d-none mt-3">
+                <form id="registerForm" novalidate>
+                    <div class="row g-2 mb-2">
+                        <div class="col-6"><input type="text" class="form-control-soft" id="regFirstName" placeholder="First name" required></div>
+                        <div class="col-6"><input type="text" class="form-control-soft" id="regLastName" placeholder="Last name" required></div>
+                    </div>
+                    <div class="mb-3"><input type="email" class="form-control-soft" id="regEmail" placeholder="Email address" required></div>
+                    <div class="mb-3"><input type="text" class="form-control-soft" id="regPhone" placeholder="Phone (optional)"></div>
+                    <div class="mb-3 input-group-soft">
+                        <input type="password" class="form-control-soft" id="regPassword" placeholder="Password (min 6)" required>
+                        <button type="button" class="toggle-pw" onclick="togglePasswordVisibility('regPassword', this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <div class="mb-3 input-group-soft">
+                        <input type="password" class="form-control-soft" id="regConfirm" placeholder="Confirm password" required>
+                        <button type="button" class="toggle-pw" onclick="togglePasswordVisibility('regConfirm', this)"><i class="fas fa-eye"></i></button>
+                    </div>
+                    <div class="mb-3 form-check">
+                        <input class="form-check-input" type="checkbox" id="termsCheck" required style="border-radius:6px;">
+                        <label class="form-check-label" for="termsCheck" style="font-size:0.85rem; color:var(--text-secondary);">I agree to <a href="#" class="link-soft">Terms</a> &amp; <a href="#" class="link-soft">Privacy</a></label>
+                    </div>
+                    <button type="submit" class="btn-soft btn-soft-success"><i class="fas fa-user-plus me-2"></i>Create account</button>
+                    <p class="mt-3 text-center" style="font-size:0.9rem; color:var(--text-secondary);">
+                        Already have an account? <a href="#" id="switchToLogin" class="link-soft">Sign in</a>
+                    </p>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Dashboard Preview (shown after login) -->
+    <div id="dashboardPreview" class="dashboard-preview">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h4><i class="fas fa-th-large me-2"></i>Dashboard</h4>
+            <span class="badge-soft" id="roleBadge">Customer</span>
+        </div>
+        <p class="text-muted small" id="welcomeMsg">Welcome back! You're logged in as a customer.</p>
+        <div class="d-flex flex-wrap gap-2 mt-3">
+            <a href="#services" class="quick-link"><i class="fas fa-cubes me-1"></i>Services</a>
+            <a href="#profile" class="quick-link"><i class="fas fa-user me-1"></i>Profile</a>
+            <a href="#projects" class="quick-link"><i class="fas fa-project-diagram me-1"></i>Projects</a>
+            <a href="#" id="logoutBtn" class="quick-link" style="color:#ef4444;"><i class="fas fa-sign-out-alt me-1"></i>Logout</a>
+        </div>
+        <div class="mt-3 p-3 rounded" style="background:var(--bg-primary); border:1px solid var(--border-color);">
+            <small class="text-muted">🔗 All pages are linked. You can navigate using the links above.</small>
+        </div>
+    </div>
+
+    <!-- hidden admin hint -->
+    <div class="admin-credit">
+        <i class="fas fa-shield-alt me-1"></i> Admin access · private
+    </div>
+</div>
+
+<script>
+    (function() {
+        // ---------- theme ----------
+        const toggle = document.getElementById('themeToggle');
+        const html = document.documentElement;
+        function setTheme(theme) {
+            html.setAttribute('data-theme', theme);
+            toggle.classList.toggle('active', theme === 'dark');
+            localStorage.setItem('theme', theme);
+        }
+        const saved = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme:dark)').matches ? 'dark' : 'light');
+        setTheme(saved);
+        toggle.addEventListener('click', () => {
+            const current = html.getAttribute('data-theme');
+            setTheme(current === 'light' ? 'dark' : 'light');
+        });
+
+        // ---------- message ----------
+        const msgBox = document.getElementById('messageBox');
+        function showMessage(msg, type = 'info') {
+            msgBox.textContent = msg;
+            msgBox.className = 'alert-soft show';
+            if (type === 'error') msgBox.style.borderColor = '#ef4444';
+            else if (type === 'success') msgBox.style.borderColor = '#10b981';
+            else { msgBox.style.borderColor = 'var(--border-color)'; }
+            setTimeout(() => { msgBox.classList.remove('show'); }, 5000);
+        }
+
+        // ---------- toggle pw ----------
+        window.togglePasswordVisibility = function(inputId, btn) {
+            const inp = document.getElementById(inputId);
+            if (!inp) return;
+            const icon = btn.querySelector('i');
+            if (inp.type === 'password') {
+                inp.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                inp.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        };
+
+        // ---------- switch login / register ----------
+        const loginContainer = document.getElementById('loginContainer');
+        const registerContainer = document.getElementById('registerFormContainer');
+        const switchToRegister = document.getElementById('switchToRegister');
+        const switchToLogin = document.getElementById('switchToLogin');
+
+        function showLogin() {
+            loginContainer.style.display = 'block';
+            registerContainer.classList.add('d-none');
+            document.getElementById('pageTitle').textContent = 'Sign in with your account or ID';
+        }
+        function showRegister() {
+            loginContainer.style.display = 'none';
+            registerContainer.classList.remove('d-none');
+            document.getElementById('pageTitle').textContent = 'Create your account';
+        }
+
+        if (switchToRegister) switchToRegister.addEventListener('click', (e) => { e.preventDefault(); showRegister(); });
+        if (switchToLogin) switchToLogin.addEventListener('click', (e) => { e.preventDefault(); showLogin(); });
+
+        // ---------- forgot (demo) ----------
+        document.getElementById('forgotLink').addEventListener('click', (e) => {
+            e.preventDefault();
+            showMessage('📧 Reset link sent to your email (demo)', 'info');
+        });
+
+        // ---------- login (with dashboard redirect) ----------
+        const dashboardPreview = document.getElementById('dashboardPreview');
+        const roleBadge = document.getElementById('roleBadge');
+        const welcomeMsg = document.getElementById('welcomeMsg');
+        const pageTitle = document.getElementById('pageTitle');
+
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const identifier = document.getElementById('loginIdentifier').value.trim();
+            const pass = document.getElementById('loginPassword').value.trim();
+            if (!identifier || !pass) { showMessage('Please fill in both fields', 'error'); return; }
+
+            // Determine role (admin hidden)
+            let role = 'customer';
+            if (identifier === 'admin@multiservice' || identifier === 'admin') {
+                role = 'admin';
+            }
+
+            // Show dashboard
+            loginContainer.style.display = 'none';
+            dashboardPreview.classList.add('active');
+            pageTitle.textContent = 'Dashboard';
+
+            // Update dashboard content
+            roleBadge.textContent = role.charAt(0).toUpperCase() + role.slice(1);
+            welcomeMsg.textContent = `Welcome back, ${identifier}! You're logged in as a ${role}.`;
+
+            showMessage(`✅ Successfully logged in as ${role}`, 'success');
+
+            // Store session
+            localStorage.setItem('user', JSON.stringify({ id: identifier, role: role }));
+        });
+
+        // ---------- register (demo) ----------
+        document.getElementById('registerForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const fname = document.getElementById('regFirstName').value.trim();
+            const lname = document.getElementById('regLastName').value.trim();
+            const email = document.getElementById('regEmail').value.trim();
+            const pass = document.getElementById('regPassword').value;
+            const confirm = document.getElementById('regConfirm').value;
+            const terms = document.getElementById('termsCheck').checked;
+
+            if (!fname || !lname || !email || !pass || !confirm) {
+                showMessage('All required fields must be filled', 'error');
+                return;
+            }
+            if (pass.length < 6) { showMessage('Password must be at least 6 characters', 'error'); return; }
+            if (pass !== confirm) { showMessage('Passwords do not match', 'error'); return; }
+            if (!terms) { showMessage('You must agree to the Terms', 'error'); return; }
+
+            showMessage(`🎉 Account created for ${fname} ${lname}`, 'success');
+            setTimeout(() => {
+                showMessage('📋 You can now sign in', 'info');
+                showLogin();
+                document.getElementById('loginIdentifier').value = email;
+                document.getElementById('loginPassword').value = '';
+            }, 1200);
+        });
+
+        // ---------- logout ----------
+        document.getElementById('logoutBtn').addEventListener('click', function(e) {
+            e.preventDefault();
+            dashboardPreview.classList.remove('active');
+            loginContainer.style.display = 'block';
+            pageTitle.textContent = 'Sign in with your account or ID';
+            localStorage.removeItem('user');
+            showMessage('👋 Logged out successfully', 'info');
+            document.getElementById('loginPassword').value = '';
+        });
+
+        // ---------- check session on load ----------
+        const savedUser = localStorage.getItem('user');
+        if (savedUser) {
+            try {
+                const user = JSON.parse(savedUser);
+                if (user && user.id) {
+                    loginContainer.style.display = 'none';
+                    dashboardPreview.classList.add('active');
+                    pageTitle.textContent = 'Dashboard';
+                    roleBadge.textContent = user.role.charAt(0).toUpperCase() + user.role.slice(1);
+                    welcomeMsg.textContent = `Welcome back, ${user.id}! You're logged in as a ${user.role}.`;
+                }
+            } catch(e) {}
+        }
+
+        // ---------- quick links (demo navigation) ----------
+        document.querySelectorAll('.quick-link').forEach(link => {
+            if (link.id !== 'logoutBtn') {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const href = this.getAttribute('href');
+                    showMessage(`🔗 Navigating to ${href} (demo)`, 'info');
+                });
+            }
+        });
+
+        // show login by default
+        showLogin();
+    })();
+</script>
+</body>
+</html>
