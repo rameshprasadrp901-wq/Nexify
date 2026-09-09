@@ -1,0 +1,22 @@
+{
+  "name": "nexify-website",
+  "version": "1.0.0",
+  "description": "Modern multi-service business website with 3D animations",
+  "main": "index.html",
+  "scripts": {
+    "start": "live-server --port=5500",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "website",
+    "business",
+    "3d",
+    "threejs",
+    "responsive"
+  ],
+  "author": "Your Name",
+  "license": "MIT",
+  "devDependencies": {
+    "live-server": "^1.2.2"
+  }
+}
